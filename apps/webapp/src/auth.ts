@@ -3,10 +3,6 @@ import Credentials from 'next-auth/providers/credentials';
 import Google from 'next-auth/providers/google';
 import { authorizeRequest, isAllowedEmail, isDummyAuthEnabled } from './auth-policy';
 
-// 認可ポリシーは ./auth-policy(純粋関数・単体テスト可能)に集約。
-// 既存の import 互換のためここから re-export する。
-export { authorizeRequest, isAllowedEmail, isDummyAuthEnabled };
-
 // providers を動的に組む。Google は常に有効。
 // dummy(Credentials)は AUTH_DUMMY_ENABLED=true のローカル開発時だけ追加する。
 // 本番では AUTH_DUMMY_ENABLED を未設定にすること(有効だと誰でもログインできてしまう)。
@@ -23,7 +19,7 @@ const dummyProvider = Credentials({
   },
 });
 
-export const { handlers, auth, signIn, signOut } = NextAuth({
+export const { handlers, auth, signIn } = NextAuth({
   providers: [
     Google({
       clientId: process.env.GOOGLE_CLIENT_ID,
